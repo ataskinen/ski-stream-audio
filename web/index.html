@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ski Stream Audio</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">TIMING TOWER ↔ STREAMING DESK</p>
+        <h1>Ski Stream Audio</h1>
+        <p>Route audio. Check the connection. Stay in control.</p>
+      </header>
+      <section class="status">
+        <div>
+          <span id="state">Connecting…</span>
+          <p id="details">Loading endpoint status</p>
+        </div>
+        <div class="actions">
+          <button id="start">Start audio</button
+          ><button id="stop" class="secondary">Stop</button
+          ><button id="tone" class="secondary">Test output · 3 seconds</button>
+        </div>
+      </section>
+      <p id="notice" role="status"></p>
+      <p id="error" role="alert"></p>
+      <section class="meters">
+        <label
+          >Send level
+          <meter id="send-level" min="0" max="1" value="0"></meter></label
+        ><label
+          >Receive level
+          <meter id="receive-level" min="0" max="1" value="0"></meter
+        ></label>
+      </section>
+      <form id="settings">
+        <div class="grid">
+          <fieldset>
+            <legend>Operation</legend>
+            <label
+              >Mode<select name="mode">
+                <option value="receive">Receive only</option>
+                <option value="send">Send only</option>
+                <option value="duplex">Send and receive</option>
+              </select></label
+            ><label class="check"
+              ><input type="checkbox" name="autostart" />Start audio when the
+              server boots</label
+            >
+            <p class="hint">
+              Save applies settings and restarts audio if it is running. Start
+              and Stop control this session.
+            </p>
+          </fieldset>
+          <fieldset>
+            <legend>Network</legend>
+            <label>Send to IPv4 address<input name="peer_ip" required /></label
+            ><label
+              >Destination UDP port<input
+                name="peer_port"
+                type="number"
+                min="1024"
+                max="65535"
+                required /></label
+            ><label
+              >Local bind IPv4 address<input name="bind_ip" required /></label
+            ><label
+              >Local UDP port<input
+                name="listen_port"
+                type="number"
+                min="1024"
+                max="65535"
+                required /></label
+            ><label
+              >Accept audio from IPv4 address<input
+                name="source_ip"
+                required /></label
+            ><label
+              >Accepted source UDP port<input
+                name="source_port"
+                type="number"
+                min="1024"
+                max="65535"
+                required
+            /></label>
+          </fieldset>
+          <fieldset id="send-fields">
+            <legend>Send</legend>
+            <label>Input device<select name="input_device"></select></label
+            ><label
+              >Device channel count<input
+                name="input_channels"
+                type="number"
+                min="1"
+                max="32"
+                required /></label
+            ><label
+              >Send channels (left, right)<input
+                name="input_map"
+                placeholder="1, 2"
+                required /></label
+            ><label
+              >Send volume <output id="send-gain-value"></output
+              ><input
+                name="send_gain"
+                type="range"
+                min="0"
+                max="2"
+                step="0.01" /></label
+            ><label class="check"
+              ><input name="send_mute" type="checkbox" />Mute send</label
+            >
+            <p class="hint">
+              Choose Test tone for a microphone-free network test. A mono mic
+              can use channels 1, 1.
+            </p>
+          </fieldset>
+          <fieldset id="receive-fields">
+            <legend>Receive</legend>
+            <label>Output device<select name="output_device"></select></label
+            ><label
+              >Device channel count<input
+                name="output_channels"
+                type="number"
+                min="2"
+                max="32"
+                required /></label
+            ><label
+              >Output channels (left, right)<input
+                name="output_map"
+                placeholder="1, 2"
+                required /></label
+            ><label
+              >Receive volume <output id="receive-gain-value"></output
+              ><input
+                name="receive_gain"
+                type="range"
+                min="0"
+                max="2"
+                step="0.01" /></label
+            ><label class="check"
+              ><input name="receive_mute" type="checkbox" />Mute receive</label
+            >
+            <p class="hint">
+              Start low when using headphones. The local test tone also respects
+              receive volume and mute.
+            </p>
+          </fieldset>
+        </div>
+        <details>
+          <summary>Buffer and recovery settings</summary>
+          <label
+            >Device buffer (seconds)<input
+              name="device_latency_seconds"
+              type="number"
+              min="0.01"
+              max="1"
+              step="0.01"
+              required
+          /></label>
+          <div class="grid">
+            <label
+              >Jitter buffer (5 ms packets)<input
+                name="jitter_packets"
+                type="number"
+                min="1"
+                max="200"
+                required /></label
+            ><label
+              >Maximum buffer (packets)<input
+                name="max_packets"
+                type="number"
+                min="2"
+                max="200"
+                required /></label
+            ><label
+              >Receive timeout (seconds)<input
+                name="timeout_seconds"
+                type="number"
+                min="0.1"
+                max="60"
+                step="0.1"
+                required /></label
+            ><label
+              >Device retry (seconds)<input
+                name="retry_seconds"
+                type="number"
+                min="0.1"
+                max="60"
+                step="0.1"
+                required
+            /></label>
+          </div>
+        </details>
+        <div class="actions">
+          <button type="submit">Save and apply</button
+          ><button id="refresh" type="button" class="secondary">
+            Refresh devices</button
+          ><span id="dirty"></span>
+        </div>
+      </form>
+      <section>
+        <h2>Recent activity</h2>
+        <pre id="logs">Waiting for logs…</pre>
+      </section>
+      <footer>
+        Keep the mixer return out of the tower send. Keep the OBS tower source
+        on Monitor Off. Both exclusions are required to prevent feedback.
+      </footer>
+    </main>
+  </body>
+</html>

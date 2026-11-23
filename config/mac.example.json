@@ -1,0 +1,22 @@
+{
+  "peer_ip": "192.168.1.30",
+  "listen_port": 5000,
+  "peer_port": 5001,
+  "input_device": "BlackHole 16ch",
+  "output_device": "BlackHole 2ch",
+  "input_channels": 16,
+  "output_channels": 2,
+  "input_map": [
+    1,
+    2
+  ],
+  "output_map": [
+    1,
+    2
+  ],
+  "jitter_packets": 8,
+  "max_packets": 32,
+  "timeout_seconds": 0.5,
+  "retry_seconds": 2,
+  "status_seconds": 5
+}

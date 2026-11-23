@@ -1,0 +1,31 @@
+services:
+  audio:
+    build:
+      context: .
+      dockerfile: raspberry-pi/Dockerfile
+    restart: unless-stopped
+    network_mode: host
+    user: "${AUDIO_UID:-1000}:${AUDIO_GID:-1000}"
+    group_add:
+      - "${AUDIO_GROUP_ID:-29}"
+    devices:
+      - /dev/snd:/dev/snd
+    volumes:
+      - ./local:/data
+    command:
+      [
+        "python",
+        "/app/admin.py",
+        "--host",
+        "0.0.0.0",
+        "--data-dir",
+        "/data",
+        "--port",
+        "8080",
+      ]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    stop_grace_period: 10s

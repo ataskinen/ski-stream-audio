@@ -1,0 +1,2 @@
+sounddevice==0.5.3
+audioop-lts==0.2.2; python_version >= "3.13"

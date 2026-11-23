@@ -1,0 +1,19 @@
+.git
+.venv
+__pycache__
+config.json
+local
+recordings
+__pycache__
+.env
+
+._*
+
+# Local credentials and environment overrides
+.env.*
+admin-password
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+secrets/
